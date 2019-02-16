@@ -25534,7 +25534,79 @@ if ("development" === 'production') {
 } else {
   module.exports = require('./cjs/react-dom.development.js');
 }
-},{"./cjs/react-dom.development.js":"node_modules/react-dom/cjs/react-dom.development.js"}],"Components/App.js":[function(require,module,exports) {
+},{"./cjs/react-dom.development.js":"node_modules/react-dom/cjs/react-dom.development.js"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
+
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+
+  return bundleURL;
+}
+
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"Components/BMI.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"Components/BMI.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25543,6 +25615,156 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
+
+require("./BMI.css");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+var BMI =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(BMI, _Component);
+
+  function BMI(props) {
+    var _this;
+
+    _classCallCheck(this, BMI);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(BMI).call(this, props));
+    _this.state = {
+      height: 5 * 12,
+      //five feet
+      weight: 150 // 150 lbs
+
+    };
+    _this.handleHeightChange = _this.handleHeightChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleWeightChange = _this.handleWeightChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    return _this;
+  }
+
+  _createClass(BMI, [{
+    key: "handleHeightChange",
+    value: function handleHeightChange(event) {
+      this.setState({
+        height: event.target.value
+      });
+    }
+  }, {
+    key: "handleWeightChange",
+    value: function handleWeightChange(event) {
+      this.setState({
+        weight: event.target.value
+      });
+    }
+  }, {
+    key: "displayHeight",
+    value: function displayHeight() {
+      var feet = Math.floor(this.state.height / 12);
+      var inches = this.state.height % 12;
+      return "".concat(feet, " ft ").concat(inches, " ") + this.pluralize(this.state.height, 'inch', 'inches');
+    }
+  }, {
+    key: "displayWeight",
+    value: function displayWeight() {
+      return this.state.weight + ' ' + this.pluralize(this.state.weight, 'pound', 'pounds');
+    }
+  }, {
+    key: "pluralize",
+    value: function pluralize(count, singular, plural) {
+      if (count === 1) {
+        return singular;
+      }
+
+      return plural;
+    }
+  }, {
+    key: "displayBMI",
+    value: function displayBMI() {
+      var bmiMath = 703 * this.state.weight / (this.state.height * this.state.height); //actual formula
+
+      var bmiRound = bmiMath.toFixed(2); // to fixed!  great for 2 decimal places
+
+      return bmiRound; //value in now a STRING from tofixed()
+    }
+  }, {
+    key: "displayClassification",
+    value: function displayClassification() {
+      var bmi = parseInt(this.displayBMI());
+
+      if (bmi < 18.5) {
+        return 'Underweight';
+      } else if (bmi < 24.9) {
+        return 'Normal';
+      } else if (bmi < 29.9) {
+        return "Overweight";
+      } else {
+        return "Obese";
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react.default.createElement("div", {
+        className: "container"
+      }, _react.default.createElement("h1", null, "BMI Calculator"), _react.default.createElement("p", null, "Height"), _react.default.createElement("p", null, _react.default.createElement("input", {
+        type: "range",
+        value: this.state.height,
+        min: "1",
+        max: 8 * 12,
+        onChange: this.handleHeightChange
+      })), _react.default.createElement("p", null, "Weight"), _react.default.createElement("p", null, _react.default.createElement("input", {
+        type: "range",
+        value: this.state.weight,
+        min: "1",
+        max: 350,
+        onChange: this.handleWeightChange
+      })), _react.default.createElement("div", {
+        className: "result"
+      }, this.displayHeight()), _react.default.createElement("div", {
+        className: "result"
+      }, this.displayWeight()), _react.default.createElement("div", {
+        className: "result"
+      }, this.displayBMI()), _react.default.createElement("div", {
+        className: "result"
+      }, this.displayClassification()));
+    }
+  }]);
+
+  return BMI;
+}(_react.Component);
+
+exports.default = BMI;
+},{"react":"node_modules/react/index.js","./BMI.css":"Components/BMI.css"}],"Components/App.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _BMI = _interopRequireDefault(require("./BMI"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -25578,7 +25800,7 @@ function (_Component) {
   _createClass(App, [{
     key: "render",
     value: function render() {
-      return _react.default.createElement("div", null, _react.default.createElement("h1", null, "Parcel Explore App"), _react.default.createElement("p", null, "Start of new Project"));
+      return _react.default.createElement("div", null, _react.default.createElement(_BMI.default, null));
     }
   }]);
 
@@ -25586,7 +25808,7 @@ function (_Component) {
 }(_react.Component);
 
 exports.default = App;
-},{"react":"node_modules/react/index.js"}],"main.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./BMI":"Components/BMI.js"}],"main.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -25625,7 +25847,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65467" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51883" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
