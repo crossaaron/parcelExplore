@@ -54,7 +54,7 @@ export default class BMI extends Component {
         } else if (bmi < 29.9) {
             return "Overweight"
         } else {
-            return "Obese"
+            return <span className='warning'>Obese</span>
         }
     }
 

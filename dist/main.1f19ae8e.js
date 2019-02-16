@@ -25716,7 +25716,9 @@ function (_Component) {
       } else if (bmi < 29.9) {
         return "Overweight";
       } else {
-        return "Obese";
+        return _react.default.createElement("span", {
+          className: "warning"
+        }, "Obese");
       }
     }
   }, {
@@ -25847,7 +25849,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51883" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55567" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
